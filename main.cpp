@@ -12,8 +12,8 @@ using namespace std;
 
 const char *MAIN_MENU_STRING = "\n1) Student Management\n2) Faculty Management\n3) Course Management\nOther) Quit\nEnter your choice: ";
 const char *STUDENT_MENU_STRING = "\n1) Add Student\n2) Remove Student\n3) Update Student Details\n4) View Student Details\n5) List all Students\nOther) Back\nEnter your choice: ";
-const char *FACULTY_MENU_STRING = "\n1) Add Faculty\n2) Remove Faculty\n3) Update Faculty Details\n4) View Faculty Details\n5) List all Faculties\nOther) Quit\nEnter your choice: ";
-const char *COURSE_MENU_STRING = "\n1) Add Course\n2) Remove Course\n3) Update Course Details\n4) View Course Details\n5) List all Courses\n6) Add Student to Course\n7) Remove Student from Course\n8) View Enrolled Students\nOther) Quit\nEnter your choice: ";
+const char *FACULTY_MENU_STRING = "\n1) Add Faculty\n2) Remove Faculty\n3) Update Faculty Details\n4) View Faculty Details\n5) List all Faculties\nOther) Back\nEnter your choice: ";
+const char *COURSE_MENU_STRING = "\n1) Add Course\n2) Remove Course\n3) Update Course Details\n4) View Course Details\n5) List all Courses\n6) Add Student to Course\n7) Remove Student from Course\n8) View Enrolled Students\nOther) Back\nEnter your choice: ";
 
 shared_ptr<StudentList> sList;
 shared_ptr<FacultyList> fList;
