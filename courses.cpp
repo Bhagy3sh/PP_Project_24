@@ -97,7 +97,8 @@ void Course::display() {
     cout << "Course Name: " << this->courseName << endl;
     cout << "Course ID: " << this->courseID << endl;
     cout << "No. of Credits: " << this->credits << endl;
-    cout << "Assigned Faculty: " << this->assignedFaculty.lock()->getName() << endl;
+    auto sPtr = this->assignedFaculty.lock();
+    cout << "Assigned Faculty: " << (sPtr ? sPtr->getName() : "None") << endl;
     this->displayExtra();
 }
 
