@@ -15,9 +15,9 @@ const char *STUDENT_MENU_STRING = "\n1) Add Student\n2) Remove Student\n3) Updat
 const char *FACULTY_MENU_STRING = "\n1) Add Faculty\n2) Remove Faculty\n3) Update Faculty Details\n4) View Faculty Details\n5) List all Faculties\nOther) Back\nEnter your choice: ";
 const char *COURSE_MENU_STRING = "\n1) Add Course\n2) Remove Course\n3) Update Course Details\n4) View Course Details\n5) List all Courses\n6) Add Student to Course\n7) Remove Student from Course\n8) View Enrolled Students\nOther) Back\nEnter your choice: ";
 
-shared_ptr<StudentList> sList;
-shared_ptr<FacultyList> fList;
-shared_ptr<CourseList> cList;
+shared_ptr<StudentList> studentList;
+shared_ptr<FacultyList> facultyList;
+shared_ptr<CourseList> courseList;
 
 void studentMenu() {
     while (true) {
@@ -30,7 +30,7 @@ void studentMenu() {
 
         switch (choice) {
         case '1': {
-            sList->add();
+            studentList->add();
             break;
         }
         case '2': {
@@ -40,7 +40,7 @@ void studentMenu() {
             cin >> prn;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (sList->remove(prn)) {
+            if (studentList->remove(prn)) {
                 cout << "Successfully removed!" << endl;
             } else {
                 cout << "Student not found!" << endl;
@@ -55,7 +55,7 @@ void studentMenu() {
             cin >> prn;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (auto sPtr = sList->get(prn).lock()) {
+            if (auto sPtr = studentList->get(prn).lock()) {
                 sPtr->updateInfo();
             } else {
                 cout << "Student not found!" << endl;
@@ -70,8 +70,8 @@ void studentMenu() {
             cin >> prn;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (auto sPtr = sList->get(prn).lock()) {
-                sPtr->display(cList);
+            if (auto sPtr = studentList->get(prn).lock()) {
+                sPtr->display(courseList);
             } else {
                 cout << "Student not found!" << endl;
             }
@@ -80,7 +80,7 @@ void studentMenu() {
         }
         case '5': {
             cout << "Students: " << endl;
-            sList->displayStudents();
+            studentList->displayStudents();
             break;
         }
         default: {
@@ -101,7 +101,7 @@ void facultyMenu() {
 
         switch (choice) {
         case '1': {
-            fList->add();
+            facultyList->add();
             break;
         }
         case '2': {
@@ -111,7 +111,7 @@ void facultyMenu() {
             cin >> empID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (fList->remove(empID)) {
+            if (facultyList->remove(empID)) {
                 cout << "Successfully removed!" << endl;
             } else {
                 cout << "Faculty not found!" << endl;
@@ -126,7 +126,7 @@ void facultyMenu() {
             cin >> empID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (auto sPtr = fList->get(empID).lock()) {
+            if (auto sPtr = facultyList->get(empID).lock()) {
                 sPtr->updateInfo();
             } else {
                 cout << "Faculty not found!" << endl;
@@ -141,8 +141,8 @@ void facultyMenu() {
             cin >> empID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (auto sPtr = fList->get(empID).lock()) {
-                sPtr->display(cList);
+            if (auto sPtr = facultyList->get(empID).lock()) {
+                sPtr->display(courseList);
             } else {
                 cout << "Faculty not found!" << endl;
             }
@@ -151,7 +151,7 @@ void facultyMenu() {
         }
         case '5': {
             cout << "Faculties: " << endl;
-            fList->displayFaculty();
+            facultyList->displayFaculty();
             break;
         }
         default: {
@@ -172,7 +172,7 @@ void courseMenu() {
 
         switch (choice) {
         case '1': {
-            cList->add(fList);
+            courseList->add(facultyList);
             break;
         }
         case '2': {
@@ -182,7 +182,7 @@ void courseMenu() {
             cin >> crsID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (cList->remove(crsID)) {
+            if (courseList->remove(crsID)) {
                 cout << "Successfully removed!" << endl;
             } else {
                 cout << "Course not found!" << endl;
@@ -197,8 +197,8 @@ void courseMenu() {
             cin >> crsID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (auto sPtr = cList->get(crsID).lock()) {
-                sPtr->updateInfo(fList);
+            if (auto sPtr = courseList->get(crsID).lock()) {
+                sPtr->updateInfo(facultyList);
             } else {
                 cout << "Course not found!" << endl;
             }
@@ -212,7 +212,7 @@ void courseMenu() {
             cin >> crsID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            if (auto sPtr = cList->get(crsID).lock()) {
+            if (auto sPtr = courseList->get(crsID).lock()) {
                 sPtr->display();
             } else {
                 cout << "Course not found!" << endl;
@@ -222,7 +222,7 @@ void courseMenu() {
         }
         case '5': {
             cout << "Courses: " << endl;
-            cList->displayCourses();
+            courseList->displayCourses();
             break;
         }
 
@@ -232,9 +232,9 @@ void courseMenu() {
             cout << "Enter course ID to which student will be added: ";
             cin >> crsID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            auto crs = cList->get(crsID);
+            auto crs = courseList->get(crsID);
             if (auto sPtr = crs.lock()) {
-                sPtr->addStudent(sList);
+                sPtr->addStudent(studentList);
             } else {
                 cout << "Course not found!" << endl;
             }
@@ -247,7 +247,7 @@ void courseMenu() {
             cout << "Enter course ID from which student will be removed: ";
             cin >> crsID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            auto crs = cList->get(crsID);
+            auto crs = courseList->get(crsID);
             if (auto sPtr = crs.lock()) {
                 sPtr->removeStudent();
             } else {
@@ -262,7 +262,7 @@ void courseMenu() {
             cout << "Enter course ID for which students will be displayed: ";
             cin >> crsID;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            auto crs = cList->get(crsID);
+            auto crs = courseList->get(crsID);
             if (auto sPtr = crs.lock()) {
                 sPtr->displayStudents();
             } else {
@@ -279,9 +279,9 @@ void courseMenu() {
 }
 
 int main() {
-    sList = make_shared<StudentList>();
-    fList = make_shared<FacultyList>();
-    cList = make_shared<CourseList>();
+    studentList = make_shared<StudentList>();
+    facultyList = make_shared<FacultyList>();
+    courseList = make_shared<CourseList>();
 
     while (true) {
         char choice;
