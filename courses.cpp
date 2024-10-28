@@ -63,7 +63,7 @@ void Course::addStudent(shared_ptr<StudentList> studentList) {
     }
 
     auto st = studentList->get(prn);
-    if (st.lock()) { // check if this student exists in the student list
+    if (st.lock()) {                          // check if this student exists in the student list
         this->enrolledStudents.push_back(st); // if yes, then add
         cout << "Student added to course." << endl;
     } else {
